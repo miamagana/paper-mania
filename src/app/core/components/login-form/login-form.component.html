@@ -1,0 +1,20 @@
+<div fxLayout="column" fxFlex fxLayoutAlign="center center" class="login">
+  <form [formGroup]="loginForm">
+    <mat-form-field appearance="outline">
+      <input
+        matInput
+        formControlName="username"
+        autocomplete="off"
+        placeholder="Set your username"
+      />
+    </mat-form-field>
+  </form>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="submit()"
+    [disabled]="loginForm.invalid"
+  >
+    Play!
+  </button>
+</div>

@@ -1,0 +1,51 @@
+.game-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  mat-toolbar {
+    h1 {
+      margin-left: 8px;
+      font-size: 1.5em;
+    }
+  }
+  .sidenav-container {
+    flex: 1;
+    margin-top: 0px;
+    height: 100%;
+  }
+}
+
+@media (max-width: 425px) {
+  .game-container {
+    mat-toolbar {
+      h1 {
+        font-size: 0.75rem;
+        margin-left: 4px;
+      }
+    }
+  }
+}
+
+@media (min-width: 425px) {
+  .game-container {
+    mat-toolbar {
+      h1 {
+        font-size: 1rem;
+        margin-left: 4px;
+      }
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  .game-container {
+    mat-toolbar {
+      h1 {
+        font-size: 1.5rem;
+        margin-left: 8px;
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+<div class="game-container">
+  <mat-toolbar color="primary" fxLayout="row" fxLayoutAlign=" center">
+    <button mat-icon-button (click)="snav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <h1>Hi, {{ user$ | async }}, Welcome to PaperMania!</h1>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #snav [mode]="'over'" [autoFocus]="false">
+      <app-action-bar
+        [sound]="sound$ | async"
+        [music]="music$ | async"
+        (toggleSound)="toggleSound()"
+        (toggleMusic)="toggleMusic()"
+      ></app-action-bar>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <app-game-screen
+        [total]="total$ | async"
+        [gainsPerSecond]="gainsPerSecond$ | async"
+        [gainsPerClick]="gainsPerClick$ | async"
+        (userClick)="userClick()"
+      ></app-game-screen>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
