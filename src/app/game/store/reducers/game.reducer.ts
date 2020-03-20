@@ -1,16 +1,27 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import * as GameActions from '../actions/game.actions';
+import { ShopItem } from '../../models/shop-item';
+import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 
+export interface ShopItemState extends EntityState<ShopItem> {}
 export interface GameState {
   total: number;
   gainsPerClick: number;
   gainsPerSecond: number;
+  currentItems: ShopItemState;
+  shopItems: ShopItemState;
 }
+
+export const itemAdapter: EntityAdapter<ShopItem> = createEntityAdapter<
+  ShopItem
+>();
 
 export const initialGameState: GameState = {
   total: 0,
-  gainsPerClick: 1,
-  gainsPerSecond: 1
+  gainsPerClick: 100,
+  gainsPerSecond: 0,
+  currentItems: itemAdapter.getInitialState(),
+  shopItems: itemAdapter.getInitialState()
 };
 
 const reducer = createReducer(
@@ -23,11 +34,33 @@ const reducer = createReducer(
     ...state,
     total: state.total + state.gainsPerSecond
   })),
-  on(GameActions.incrementBought, (state, action) => ({
+  on(GameActions.getShopItemsSuccess, (state, action) => ({
     ...state,
-    total: state.total - action.payload.cost,
-    gainsPerSecond: state.gainsPerSecond + action.payload.gainsPerSecond
-  }))
+    shopItems: itemAdapter.setAll(action.payload, state.shopItems)
+  })),
+  on(GameActions.getShopItemsFailure, state => ({
+    ...state,
+    shopItems: itemAdapter.removeAll(state.shopItems)
+  })),
+  on(GameActions.buyItem, (state, action) => {
+    const newItem: Partial<ShopItem> = {
+      level: action.payload.level + 1,
+      cost: action.payload.cost * 2,
+      gainsPerClick: action.payload.gainsPerClick * 2,
+      gainsPerSec: action.payload.gainsPerSec * 2
+    };
+    return {
+      ...state,
+      total: state.total - action.payload.cost,
+      gainsPerSecond: state.gainsPerSecond + action.payload.gainsPerSec,
+      gainsPerClick: state.gainsPerClick + action.payload.gainsPerClick,
+      currentItems: itemAdapter.upsertOne(action.payload, state.currentItems),
+      shopItems: itemAdapter.updateOne(
+        { id: action.payload.id, changes: { ...newItem } },
+        state.shopItems
+      )
+    };
+  })
 );
 
 export function gameReducer(state: GameState | undefined, action: Action) {

@@ -36,6 +36,7 @@ export class GameComponent implements OnInit {
     interval(1000).subscribe(() => {
       this.incrementPerSecond();
     });
+    this.store.dispatch(GameActions.getShopItems());
   }
 
   toggleSound(): void {
@@ -52,5 +53,9 @@ export class GameComponent implements OnInit {
 
   incrementPerSecond(): void {
     this.store.dispatch(GameActions.incrementPerSecond());
+  }
+
+  openShop(): void {
+    this.store.dispatch(GameActions.openShop());
   }
 }

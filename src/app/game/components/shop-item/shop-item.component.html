@@ -1,0 +1,28 @@
+<mat-card class="example-card" fxflex>
+  <mat-card-header>
+    <div mat-card-avatar class="header-image"></div>
+    <mat-card-title>{{ item.name }}</mat-card-title>
+    <mat-card-subtitle>
+      <span *ngIf="!!item.gainsPerSec"
+        >Per second: +{{ item.gainsPerSec }}</span
+      >
+      <span *ngIf="!!item.gainsPerClick"
+        >Per click: +{{ item.gainsPerClick }}</span
+      >
+      <span> Level: {{ item.level }}</span
+      ><span> Cost: {{ item.cost }}</span>
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-actions>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="buyItem()"
+      [disabled]="total < item.cost"
+    >
+      <span *ngIf="!!item.level; else buySpan">Level Up</span>
+    </button>
+  </mat-card-actions>
+</mat-card>
+
+<ng-template #buySpan><span>Buy!</span></ng-template>

@@ -1,14 +1,19 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import * as ConfigActions from '../actions/config.actions';
+import { getMusicState } from '../selectors';
 
 export interface ConfigState {
   music: boolean;
+  audio: HTMLAudioElement;
   sound: boolean;
+  // fxSound: HTMLAudioElement;
 }
 
 const initialConfigState: ConfigState = {
   music: true,
-  sound: true
+  sound: true,
+  audio: new Audio('../../../../assets/audio/music.mp3')
+  // fxSound: new Audio('../../../../assets/audio/fxSound.mp3')
 };
 
 const reducer = createReducer(

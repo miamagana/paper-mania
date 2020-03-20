@@ -1,5 +1,7 @@
 <div class="action-bar" fxLayout="column" fxLayoutAlign="start start">
-  <button mat-icon-button><mat-icon>shopping_cart</mat-icon></button>
+  <button mat-icon-button (click)="shop()">
+    <mat-icon>shopping_cart</mat-icon>
+  </button>
   <button mat-icon-button (click)="switchSound()">
     <mat-icon *ngIf="sound; else soundOff">volume_up</mat-icon>
   </button>

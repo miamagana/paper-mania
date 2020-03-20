@@ -10,6 +10,7 @@ export class ActionBarComponent {
   @Input() music: boolean;
   @Output() toggleSound = new EventEmitter<void>();
   @Output() toggleMusic = new EventEmitter<void>();
+  @Output() openShop = new EventEmitter<void>();
   constructor() {}
 
   switchSound(): void {
@@ -18,5 +19,9 @@ export class ActionBarComponent {
 
   switchMusic(): void {
     this.toggleMusic.emit();
+  }
+
+  shop(): void {
+    this.openShop.emit();
   }
 }

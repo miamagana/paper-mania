@@ -1,8 +1,8 @@
 import { createSelector } from '@ngrx/store';
-import { getGameState as getGameRootState } from '../reducers';
+import * as fromGame from '../reducers';
 
 export const getGameState = createSelector(
-  getGameRootState,
+  fromGame.getGameState,
   state => state.game
 );
 
@@ -14,4 +14,22 @@ export const getGainsPerSecond = createSelector(
 export const getGainsPerClick = createSelector(
   getGameState,
   state => state.gainsPerClick
+);
+
+export const getCurrenItemsState = createSelector(
+  getGameState,
+  state => state.currentItems
+);
+
+export const {
+  selectAll: selectCurrentItems
+} = fromGame.itemAdapter.getSelectors(getCurrenItemsState);
+
+export const getShopItemsState = createSelector(
+  getGameState,
+  state => state.shopItems
+);
+
+export const { selectAll: selectShopItems } = fromGame.itemAdapter.getSelectors(
+  getShopItemsState
 );
