@@ -1,8 +1,10 @@
-<div fxLayout="column" class="game-screen" fxLayoutAlign="center center">
-  <span>Total: {{ total }}</span
-  ><span>Per second: {{ gainsPerSecond }}</span
-  ><span>Per click: {{ gainsPerClick }}</span>
-  <button mat-raised-button color="primary" (click)="clicked()">
-    Click me!
-  </button>
+<div fxLayout="column" class="game-screen">
+  <app-game-object (userClick)="clicked()"> </app-game-object>
+  <div fxlayout="row">
+    <div>
+      <span>Total: {{ total }}</span
+      ><span>Per second: {{ gainsPerSecond }}</span
+      ><span>Per click: {{ gainsPerClick }}</span>
+    </div>
+  </div>
 </div>

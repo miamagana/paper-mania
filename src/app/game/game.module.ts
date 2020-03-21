@@ -17,6 +17,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { effects } from './store/effects';
 import { ShopItemComponent } from './components/shop-item/shop-item.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { GameObjectComponent } from './components/game-object/game-object.component';
 
 const routes: Route[] = [
   {
@@ -32,7 +33,8 @@ const routes: Route[] = [
     ActionBarComponent,
     GameScreenComponent,
     ShopComponent,
-    ShopItemComponent
+    ShopItemComponent,
+    GameObjectComponent
   ],
   imports: [
     CommonModule,
