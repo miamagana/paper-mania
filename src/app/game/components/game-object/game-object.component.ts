@@ -5,24 +5,32 @@ import {
   ElementRef,
   Output,
   EventEmitter,
-  HostListener
+  HostListener,
+  Input,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import * as THREE from 'three';
 import { GLTFLoader, GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 @Component({
   selector: 'app-game-object',
   templateUrl: './game-object.component.html',
   styleUrls: ['./game-object.component.scss']
 })
-export class GameObjectComponent implements AfterViewInit {
+export class GameObjectComponent implements OnChanges, AfterViewInit {
   private renderer: THREE.WebGLRenderer;
-  private loader: GLTFLoader;
-  private textureLoader: THREE.TextureLoader;
+  private loader: GLTFLoader = new GLTFLoader();
+  private textureLoader: THREE.TextureLoader = new THREE.TextureLoader();
   private camera: THREE.PerspectiveCamera;
-  scene: THREE.Scene;
-  orbitControls: OrbitControls;
+  scene: THREE.Scene = new THREE.Scene();
+  group: THREE.Group;
+  mouse = new THREE.Vector2();
+  raycaster: THREE.Raycaster;
+  @Input() texture: string;
+  @Input() total: number;
+  @Input() gainsPerSecond: number;
+  @Input() gainsPerClick: number;
   @Output() userClick = new EventEmitter<void>();
 
   @ViewChild('canvas')
@@ -40,13 +48,7 @@ export class GameObjectComponent implements AfterViewInit {
   }
 
   private createScene() {
-    this.scene = new THREE.Scene();
-    this.loader = new GLTFLoader();
-    this.textureLoader = new THREE.TextureLoader();
-    this.textureLoader.load(
-      '../../../../assets/three/textures/texture.jpg',
-      this.onTextureLoadingCompleted
-    );
+    this.textureLoader.load(this.texture, this.onTextureLoadingCompleted);
     this.loader.load(
       '../../../../assets/three/scene.gltf',
       this.onModelLoadingCompleted
@@ -54,6 +56,7 @@ export class GameObjectComponent implements AfterViewInit {
   }
 
   private onModelLoadingCompleted(model: GLTF) {
+    this.group = model.scene;
     this.scene.add(model.scene);
     this.render();
   }
@@ -80,7 +83,8 @@ export class GameObjectComponent implements AfterViewInit {
     this.camera = new THREE.PerspectiveCamera(50, aspectRatio, 1, 1100);
     this.camera.position.x = 0;
     this.camera.position.y = 0;
-    this.camera.position.z = 5;
+    const distance = this.getDistance();
+    this.camera.position.z = distance;
   }
 
   private getAspectRatio(): number {
@@ -98,32 +102,40 @@ export class GameObjectComponent implements AfterViewInit {
     });
     this.renderer.setPixelRatio(devicePixelRatio);
     this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
-
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.setClearColor(0xffffff, 1);
     this.renderer.autoClear = true;
-
     const component: GameObjectComponent = this;
-
     (function render() {
       component.render();
     })();
-  }
-
-  public addControls() {
-    this.orbitControls = new OrbitControls(this.camera, this.canvas);
-    this.orbitControls.rotateSpeed = 1.0;
-    this.orbitControls.enableZoom = false;
-    this.orbitControls.addEventListener('change', this.render);
   }
 
   render(): void {
     this.renderer.render(this.scene, this.camera);
   }
 
-  onClick(): void {
-    this.userClick.emit();
+  getDistance(): number {
+    if (this.canvas.clientWidth <= 425) {
+      return 15;
+    } else {
+      return 7;
+    }
+  }
+
+  onClick(event: MouseEvent): void {
+    this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    this.raycaster = new THREE.Raycaster();
+    this.raycaster.setFromCamera(this.mouse, this.camera);
+    const intersects = this.raycaster.intersectObjects(
+      this.scene.children,
+      true
+    );
+    if (intersects.length > 0) {
+      this.userClick.emit();
+    }
   }
 
   @HostListener('window:resize')
@@ -131,6 +143,7 @@ export class GameObjectComponent implements AfterViewInit {
     this.canvas.style.width = '100%';
     this.canvas.style.height = '100%';
     this.camera.aspect = this.getAspectRatio();
+    this.camera.position.z = this.getDistance();
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
     this.render();
@@ -141,6 +154,12 @@ export class GameObjectComponent implements AfterViewInit {
     this.createLights();
     this.createCamera();
     this.startRendering();
-    this.addControls();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.texture) {
+      console.log('texture changed');
+      this.textureLoader.load(this.texture, this.onTextureLoadingCompleted);
+    }
   }
 }

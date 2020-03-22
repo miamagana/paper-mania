@@ -6,6 +6,7 @@ import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 export interface ShopItemState extends EntityState<ShopItem> {}
 export interface GameState {
   total: number;
+  texture: string;
   gainsPerClick: number;
   gainsPerSecond: number;
   currentItems: ShopItemState;
@@ -20,6 +21,7 @@ export const initialGameState: GameState = {
   total: 0,
   gainsPerClick: 100,
   gainsPerSecond: 0,
+  texture: '../../../../assets/three/textures/0.jpeg',
   currentItems: itemAdapter.getInitialState(),
   shopItems: itemAdapter.getInitialState()
 };
@@ -30,10 +32,16 @@ const reducer = createReducer(
     ...state,
     total: state.total + state.gainsPerClick
   })),
-  on(GameActions.incrementPerSecond, state => ({
-    ...state,
-    total: state.total + state.gainsPerSecond
-  })),
+  on(GameActions.incrementPerSecond, state => {
+    //rethink
+    // const texture = `../../../../assets/three/textures/${state.gainsPerSecond %
+    //   1000}.jpeg`;
+    return {
+      ...state,
+      total: state.total + state.gainsPerSecond
+      // texture
+    };
+  }),
   on(GameActions.getShopItemsSuccess, (state, action) => ({
     ...state,
     shopItems: itemAdapter.setAll(action.payload, state.shopItems)

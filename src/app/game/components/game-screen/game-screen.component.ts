@@ -3,21 +3,19 @@ import {
   Output,
   EventEmitter,
   Input,
-  OnChanges,
-  ChangeDetectionStrategy,
-  OnDestroy
+  ChangeDetectionStrategy
 } from '@angular/core';
 
 @Component({
   selector: 'app-game-screen',
   templateUrl: './game-screen.component.html',
-  styleUrls: ['./game-screen.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GameScreenComponent {
   @Input() total: number;
   @Input() gainsPerSecond: number;
   @Input() gainsPerClick: number;
+  @Input() texture: string;
   @Output() userClick = new EventEmitter<void>();
 
   constructor() {}

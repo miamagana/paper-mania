@@ -1,10 +1,8 @@
-<div fxLayout="column" class="game-screen">
-  <app-game-object (userClick)="clicked()"> </app-game-object>
-  <div fxlayout="row">
-    <div>
-      <span>Total: {{ total }}</span
-      ><span>Per second: {{ gainsPerSecond }}</span
-      ><span>Per click: {{ gainsPerClick }}</span>
-    </div>
-  </div>
-</div>
+<app-game-object
+  (userClick)="clicked()"
+  [texture]="texture"
+  [total]="total"
+  [gainsPerClick]="gainsPerClick"
+  [gainsPerSecond]="gainsPerSecond"
+>
+</app-game-object>

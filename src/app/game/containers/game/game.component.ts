@@ -29,6 +29,9 @@ export class GameComponent implements OnInit {
   gainsPerClick$: Observable<number> = this.store.pipe(
     select(GameSelectors.getGainsPerClick)
   );
+  texture$: Observable<string> = this.store.pipe(
+    select(GameSelectors.getTexture)
+  );
 
   constructor(private readonly store: Store<fromGame.State>) {}
 

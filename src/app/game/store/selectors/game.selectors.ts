@@ -16,6 +16,8 @@ export const getGainsPerClick = createSelector(
   state => state.gainsPerClick
 );
 
+export const getTexture = createSelector(getGameState, state => state.texture);
+
 export const getCurrenItemsState = createSelector(
   getGameState,
   state => state.currentItems
