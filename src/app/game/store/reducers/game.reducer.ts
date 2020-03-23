@@ -19,7 +19,7 @@ export const itemAdapter: EntityAdapter<ShopItem> = createEntityAdapter<
 
 export const initialGameState: GameState = {
   total: 0,
-  gainsPerClick: 100,
+  gainsPerClick: 500,
   gainsPerSecond: 0,
   texture: '../../../../assets/three/textures/0.jpeg',
   currentItems: itemAdapter.getInitialState(),
@@ -33,13 +33,9 @@ const reducer = createReducer(
     total: state.total + state.gainsPerClick
   })),
   on(GameActions.incrementPerSecond, state => {
-    //rethink
-    // const texture = `../../../../assets/three/textures/${state.gainsPerSecond %
-    //   1000}.jpeg`;
     return {
       ...state,
       total: state.total + state.gainsPerSecond
-      // texture
     };
   }),
   on(GameActions.getShopItemsSuccess, (state, action) => ({

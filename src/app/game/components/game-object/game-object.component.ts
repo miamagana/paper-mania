@@ -134,6 +134,8 @@ export class GameObjectComponent implements OnChanges, AfterViewInit {
       true
     );
     if (intersects.length > 0) {
+      this.getRotation(intersects[0].object);
+      this.render();
       this.userClick.emit();
     }
   }
@@ -158,8 +160,24 @@ export class GameObjectComponent implements OnChanges, AfterViewInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.texture) {
-      console.log('texture changed');
       this.textureLoader.load(this.texture, this.onTextureLoadingCompleted);
+    }
+  }
+
+  getRotation(object: THREE.Object3D): void {
+    const getCase = Math.floor(this.gainsPerSecond / 1000);
+    switch (getCase) {
+      case 0:
+        object.rotateZ(this.gainsPerSecond / 1000);
+        break;
+
+      case 1:
+        object.rotateX(this.gainsPerSecond / 2000);
+        break;
+
+      default:
+        object.rotateY(this.gainsPerSecond / 3000);
+        break;
     }
   }
 }
