@@ -27,6 +27,7 @@ export class GameObjectComponent implements OnChanges, AfterViewInit {
   group: THREE.Group;
   mouse = new THREE.Vector2();
   raycaster: THREE.Raycaster;
+  backgroundTexture: string;
   @Input() texture: string;
   @Input() total: number;
   @Input() gainsPerSecond: number;
@@ -38,6 +39,7 @@ export class GameObjectComponent implements OnChanges, AfterViewInit {
 
   constructor() {
     this.render = this.render.bind(this);
+    this.animate = this.animate.bind(this);
     this.onClick = this.onClick.bind(this);
     this.onModelLoadingCompleted = this.onModelLoadingCompleted.bind(this);
     this.onTextureLoadingCompleted = this.onTextureLoadingCompleted.bind(this);
@@ -48,7 +50,10 @@ export class GameObjectComponent implements OnChanges, AfterViewInit {
   }
 
   private createScene() {
-    this.textureLoader.load(this.texture, this.onTextureLoadingCompleted);
+    this.textureLoader.load(
+      this.backgroundTexture,
+      this.onTextureLoadingCompleted
+    );
     this.loader.load(
       '../../../../assets/three/scene.gltf',
       this.onModelLoadingCompleted
@@ -135,7 +140,6 @@ export class GameObjectComponent implements OnChanges, AfterViewInit {
     );
     if (intersects.length > 0) {
       this.getRotation(intersects[0].object);
-      this.render();
       this.userClick.emit();
     }
   }
@@ -151,33 +155,31 @@ export class GameObjectComponent implements OnChanges, AfterViewInit {
     this.render();
   }
 
+  animate() {
+    requestAnimationFrame(this.animate);
+    this.render();
+  }
+
   ngAfterViewInit() {
     this.createScene();
     this.createLights();
     this.createCamera();
     this.startRendering();
+    this.animate();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.texture) {
-      this.textureLoader.load(this.texture, this.onTextureLoadingCompleted);
+      this.backgroundTexture = `../../../../assets/three/textures/${this.texture}.jpg`;
+      this.textureLoader.load(
+        this.backgroundTexture,
+        this.onTextureLoadingCompleted
+      );
     }
   }
 
   getRotation(object: THREE.Object3D): void {
-    const getCase = Math.floor(this.gainsPerSecond / 1000);
-    switch (getCase) {
-      case 0:
-        object.rotateZ(this.gainsPerSecond / 1000);
-        break;
-
-      case 1:
-        object.rotateX(this.gainsPerSecond / 2000);
-        break;
-
-      default:
-        object.rotateY(this.gainsPerSecond / 3000);
-        break;
-    }
+    object.rotateY(Math.abs(this.mouse.y));
+    object.rotateX(Math.abs(this.mouse.x));
   }
 }

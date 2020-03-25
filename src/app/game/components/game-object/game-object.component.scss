@@ -4,7 +4,11 @@ canvas {
 }
 
 div {
-  pointer-events: none;
+  user-select: none; /* standard syntax */
+  -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+  -moz-user-select: none; /* mozilla browsers */
+  -khtml-user-select: none; /* webkit (konqueror) browsers */
+  -ms-user-select: none; /* IE10+ */
   position: absolute;
   cursor: default;
   top: 10px;
@@ -15,7 +19,6 @@ div {
   flex-direction: column;
   color: black;
   > span {
-    pointer-events: none;
     margin-top: 10px;
   }
 }

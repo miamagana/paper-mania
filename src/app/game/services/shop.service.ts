@@ -45,6 +45,15 @@ export class ShopService {
         gainsPerSec: 5,
         gainsPerClick: 0,
         level: 0
+      },
+      {
+        id: 4,
+        name: 'Paper Country',
+        icon: '',
+        cost: 2000,
+        gainsPerSec: 11,
+        gainsPerClick: 10,
+        level: 0
       }
     ]);
   }

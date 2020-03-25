@@ -8,8 +8,7 @@ import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-shop',
-  templateUrl: './shop.component.html',
-  styleUrls: ['./shop.component.scss']
+  templateUrl: './shop.component.html'
 })
 export class ShopComponent {
   items$: Observable<ShopItem[]> = this.store.pipe(

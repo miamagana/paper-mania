@@ -2,6 +2,7 @@ import { Action, createReducer, on } from '@ngrx/store';
 import * as GameActions from '../actions/game.actions';
 import { ShopItem } from '../../models/shop-item';
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
+import { getTexture } from '../../utils/utils';
 
 export interface ShopItemState extends EntityState<ShopItem> {}
 export interface GameState {
@@ -21,7 +22,7 @@ export const initialGameState: GameState = {
   total: 0,
   gainsPerClick: 500,
   gainsPerSecond: 0,
-  texture: '../../../../assets/three/textures/0.jpeg',
+  texture: '1',
   currentItems: itemAdapter.getInitialState(),
   shopItems: itemAdapter.getInitialState()
 };
@@ -53,8 +54,14 @@ const reducer = createReducer(
       gainsPerClick: action.payload.gainsPerClick * 2,
       gainsPerSec: action.payload.gainsPerSec * 2
     };
+    const gains: number =
+      state.gainsPerSecond +
+      action.payload.gainsPerSec +
+      (state.gainsPerClick + action.payload.gainsPerClick);
+    const texture: string = getTexture(gains, +state.texture);
     return {
       ...state,
+      texture,
       total: state.total - action.payload.cost,
       gainsPerSecond: state.gainsPerSecond + action.payload.gainsPerSec,
       gainsPerClick: state.gainsPerClick + action.payload.gainsPerClick,

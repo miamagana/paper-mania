@@ -35,7 +35,12 @@ export class GameEffects {
       this.actions$.pipe(
         ofType(GameActions.openShop),
         tap(() => {
-          this.dialog.open(ShopComponent);
+          this.dialog.open(ShopComponent, {
+            panelClass: 'shopDialog',
+            autoFocus: false,
+            restoreFocus: false,
+            maxHeight: '75vh'
+          });
         })
       ),
     { dispatch: false }
