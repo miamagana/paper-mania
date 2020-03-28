@@ -13,9 +13,6 @@ import { map, tap, startWith } from 'rxjs/operators';
   styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit {
-  sound$: Observable<boolean> = this.store.pipe(
-    select(GameSelectors.getSoundState)
-  );
   user$: Observable<string> = this.store.pipe(
     select(AuthSelectors.getCurrentUser)
   );
@@ -23,15 +20,16 @@ export class GameComponent implements OnInit {
     select(GameSelectors.getMusicState)
   );
   total$: Observable<number> = this.store.pipe(select(GameSelectors.getTotal));
+  current$: Observable<number> = this.store.pipe(
+    select(GameSelectors.getCurrent)
+  );
   gainsPerSecond$: Observable<number> = this.store.pipe(
     select(GameSelectors.getGainsPerSecond)
   );
   gainsPerClick$: Observable<number> = this.store.pipe(
     select(GameSelectors.getGainsPerClick)
   );
-  texture$: Observable<string> = this.store.pipe(
-    select(GameSelectors.getTexture)
-  );
+  level$: Observable<number> = this.store.pipe(select(GameSelectors.getLevel));
 
   constructor(private readonly store: Store<fromGame.State>) {}
 
@@ -40,10 +38,6 @@ export class GameComponent implements OnInit {
       this.incrementPerSecond();
     });
     this.store.dispatch(GameActions.getShopItems());
-  }
-
-  toggleSound(): void {
-    this.store.dispatch(GameActions.switchSound());
   }
 
   toggleMusic(): void {

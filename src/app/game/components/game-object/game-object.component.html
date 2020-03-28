@@ -1,6 +1,8 @@
 <div>
-  <span> Total : {{ total }} </span>
-  <span> Per second : {{ gainsPerSecond }} </span>
-  <span> Per click : {{ gainsPerClick }} </span>
+  <span> Level : {{ level }}</span
+  ><span> Total : {{ total }}€</span>
+  <span> Current : {{ current }}€</span>
+  <span> {{ gainsPerSecond }}€/s</span>
+  <span> {{ gainsPerClick }}€/click</span>
 </div>
 <canvas #canvas (click)="onClick($event)"> </canvas>

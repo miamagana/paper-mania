@@ -28,8 +28,9 @@ export class GameObjectComponent implements OnChanges, AfterViewInit {
   mouse = new THREE.Vector2();
   raycaster: THREE.Raycaster;
   backgroundTexture: string;
-  @Input() texture: string;
+  @Input() level: number;
   @Input() total: number;
+  @Input() current: number;
   @Input() gainsPerSecond: number;
   @Input() gainsPerClick: number;
   @Output() userClick = new EventEmitter<void>();
@@ -54,10 +55,7 @@ export class GameObjectComponent implements OnChanges, AfterViewInit {
       this.backgroundTexture,
       this.onTextureLoadingCompleted
     );
-    this.loader.load(
-      '../../../../assets/three/scene.gltf',
-      this.onModelLoadingCompleted
-    );
+    this.loader.load('assets/three/scene.gltf', this.onModelLoadingCompleted);
   }
 
   private onModelLoadingCompleted(model: GLTF) {
@@ -78,6 +76,7 @@ export class GameObjectComponent implements OnChanges, AfterViewInit {
     pointLight = new THREE.PointLight(0xffffff, 1, 1000);
     pointLight.position.set(0, 0, -100);
     this.scene.add(pointLight);
+    // tslint:disable-next-line:prefer-const
     let directionalLight = new THREE.DirectionalLight(0xffffff, 1);
     directionalLight.position.set(0, 100, 0);
     this.scene.add(directionalLight);
@@ -169,8 +168,8 @@ export class GameObjectComponent implements OnChanges, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.texture) {
-      this.backgroundTexture = `../../../../assets/three/textures/${this.texture}.jpg`;
+    if (changes.level) {
+      this.backgroundTexture = `assets/three/textures/${this.level}.jpg`;
       this.textureLoader.load(
         this.backgroundTexture,
         this.onTextureLoadingCompleted
@@ -179,7 +178,7 @@ export class GameObjectComponent implements OnChanges, AfterViewInit {
   }
 
   getRotation(object: THREE.Object3D): void {
-    object.rotateY(Math.abs(this.mouse.y));
-    object.rotateX(Math.abs(this.mouse.x));
+    object.rotateY(-this.mouse.y);
+    object.rotateX(-this.mouse.x);
   }
 }

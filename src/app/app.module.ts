@@ -15,7 +15,7 @@ import { effects } from './store/effects';
 import { reducers } from './store/reducers';
 
 export const routes: Route[] = [
-  { path: '', pathMatch: 'full', redirectTo: 'login' },
+  { path: '', pathMatch: 'full', redirectTo: 'game' },
   {
     path: 'game',
     loadChildren: () =>
@@ -23,7 +23,7 @@ export const routes: Route[] = [
     canActivate: [AuthGuard]
   },
   { path: 'login', component: LoginComponent },
-  { path: '**', redirectTo: 'login' }
+  { path: '**', redirectTo: 'game' }
 ];
 
 @NgModule({

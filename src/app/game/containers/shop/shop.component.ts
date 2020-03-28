@@ -14,7 +14,9 @@ export class ShopComponent {
   items$: Observable<ShopItem[]> = this.store.pipe(
     select(GameSelectors.selectShopItems)
   );
-  total$: Observable<number> = this.store.pipe(select(GameSelectors.getTotal));
+  current$: Observable<number> = this.store.pipe(
+    select(GameSelectors.getCurrent)
+  );
 
   constructor(private readonly store: Store<fromGame.State>) {}
 

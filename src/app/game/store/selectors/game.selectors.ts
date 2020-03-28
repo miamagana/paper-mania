@@ -7,6 +7,7 @@ export const getGameState = createSelector(
 );
 
 export const getTotal = createSelector(getGameState, state => state.total);
+export const getCurrent = createSelector(getGameState, state => state.current);
 export const getGainsPerSecond = createSelector(
   getGameState,
   state => state.gainsPerSecond
@@ -16,7 +17,7 @@ export const getGainsPerClick = createSelector(
   state => state.gainsPerClick
 );
 
-export const getTexture = createSelector(getGameState, state => state.texture);
+export const getLevel = createSelector(getGameState, state => state.level);
 
 export const getCurrenItemsState = createSelector(
   getGameState,

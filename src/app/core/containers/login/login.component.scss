@@ -7,4 +7,8 @@ div {
     rgba(0, 255, 248, 0.5) 100%,
     rgba(0, 212, 255, 1) 100%
   );
+
+  > div {
+    color: whitesmoke;
+  }
 }

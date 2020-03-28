@@ -13,9 +13,10 @@ import {
 })
 export class GameScreenComponent {
   @Input() total: number;
+  @Input() current: number;
   @Input() gainsPerSecond: number;
   @Input() gainsPerClick: number;
-  @Input() texture: string;
+  @Input() level: number;
   @Output() userClick = new EventEmitter<void>();
 
   constructor() {}

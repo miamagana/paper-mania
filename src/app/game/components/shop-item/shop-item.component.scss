@@ -1,8 +1,28 @@
 .mat-card {
   margin: 1rem 0 1rem 0;
+  span {
+    font-size: 1rem;
+  }
 }
 
 .header-image {
-  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
   background-size: cover;
+}
+
+@media (max-width: 320px) {
+  .mat-card {
+    margin: 0.5rem 0 0.5rem 0;
+    span {
+      font-size: 0.7rem;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .mat-card {
+    margin: 0.5rem 0 0.5rem 0;
+    span {
+      font-size: 0.85rem;
+    }
+  }
 }

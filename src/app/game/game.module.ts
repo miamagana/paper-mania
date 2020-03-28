@@ -22,7 +22,6 @@ import { GameObjectComponent } from './components/game-object/game-object.compon
 const routes: Route[] = [
   {
     path: '',
-    pathMatch: 'full',
     component: GameComponent
   }
 ];

@@ -9,9 +9,7 @@
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav #snav [mode]="'over'" [autoFocus]="false">
       <app-action-bar
-        [sound]="sound$ | async"
         [music]="music$ | async"
-        (toggleSound)="toggleSound()"
         (toggleMusic)="toggleMusic()"
         (openShop)="openShop(); snav.toggle()"
       ></app-action-bar>
@@ -20,7 +18,8 @@
     <mat-sidenav-content>
       <app-game-screen
         [total]="total$ | async"
-        [texture]="texture$ | async"
+        [current]="current$ | async"
+        [level]="level$ | async"
         [gainsPerSecond]="gainsPerSecond$ | async"
         [gainsPerClick]="gainsPerClick$ | async"
         (userClick)="userClick()"

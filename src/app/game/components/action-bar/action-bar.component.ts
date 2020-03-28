@@ -8,14 +8,9 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export class ActionBarComponent {
   @Input() sound: boolean;
   @Input() music: boolean;
-  @Output() toggleSound = new EventEmitter<void>();
   @Output() toggleMusic = new EventEmitter<void>();
   @Output() openShop = new EventEmitter<void>();
   constructor() {}
-
-  switchSound(): void {
-    this.toggleSound.emit();
-  }
 
   switchMusic(): void {
     this.toggleMusic.emit();

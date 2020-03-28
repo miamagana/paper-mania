@@ -10,8 +10,3 @@ export const getMusicState = createSelector(
   getConfigState,
   state => state.music
 );
-
-export const getSoundState = createSelector(
-  getConfigState,
-  state => state.sound
-);

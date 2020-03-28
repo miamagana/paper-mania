@@ -1,13 +1,14 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import * as GameActions from '../actions/game.actions';
 import { ShopItem } from '../../models/shop-item';
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
-import { getTexture } from '../../utils/utils';
+import * as GameActions from '../actions/game.actions';
 
 export interface ShopItemState extends EntityState<ShopItem> {}
+export const levelIncrement = 2500;
 export interface GameState {
   total: number;
-  texture: string;
+  current: number;
+  level: number;
   gainsPerClick: number;
   gainsPerSecond: number;
   currentItems: ShopItemState;
@@ -20,9 +21,10 @@ export const itemAdapter: EntityAdapter<ShopItem> = createEntityAdapter<
 
 export const initialGameState: GameState = {
   total: 0,
-  gainsPerClick: 500,
+  current: 0,
+  gainsPerClick: 1,
   gainsPerSecond: 0,
-  texture: '1',
+  level: 1,
   currentItems: itemAdapter.getInitialState(),
   shopItems: itemAdapter.getInitialState()
 };
@@ -31,12 +33,16 @@ const reducer = createReducer(
   initialGameState,
   on(GameActions.userClick, state => ({
     ...state,
-    total: state.total + state.gainsPerClick
+    total: state.total + state.gainsPerClick,
+    current: state.current + state.gainsPerClick
   })),
   on(GameActions.incrementPerSecond, state => {
+    const required = levelIncrement * Math.pow(state.level, state.level - 1);
     return {
       ...state,
-      total: state.total + state.gainsPerSecond
+      level: state.total >= required ? state.level + 1 : state.level,
+      total: state.total + state.gainsPerSecond,
+      current: state.current + state.gainsPerSecond
     };
   }),
   on(GameActions.getShopItemsSuccess, (state, action) => ({
@@ -54,15 +60,9 @@ const reducer = createReducer(
       gainsPerClick: action.payload.gainsPerClick * 2,
       gainsPerSec: action.payload.gainsPerSec * 2
     };
-    const gains: number =
-      state.gainsPerSecond +
-      action.payload.gainsPerSec +
-      (state.gainsPerClick + action.payload.gainsPerClick);
-    const texture: string = getTexture(gains, +state.texture);
     return {
       ...state,
-      texture,
-      total: state.total - action.payload.cost,
+      current: state.current - action.payload.cost,
       gainsPerSecond: state.gainsPerSecond + action.payload.gainsPerSec,
       gainsPerClick: state.gainsPerClick + action.payload.gainsPerClick,
       currentItems: itemAdapter.upsertOne(action.payload, state.currentItems),

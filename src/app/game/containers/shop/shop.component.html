@@ -1,8 +1,13 @@
-<div fxLayout="column" fxlayoutAlign="space-around stretch" fxflex>
+<div
+  mat-dialog-content
+  fxLayout="column"
+  fxlayoutAlign="space-around stretch"
+  fxflex
+>
   <app-shop-item
     *ngFor="let item of items$ | async"
     [item]="item"
-    [total]="total$ | async"
+    [current]="current$ | async"
     (buy)="buy($event)"
   ></app-shop-item>
 </div>
